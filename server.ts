@@ -4,16 +4,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
+app.get("/", (_: any, res: any) => {
   res.send("root");
 });
 
-app.get("/message", (req, res) => {
-    console.log(req.query);
-  res.send("lista de mensajes");
+app.get("/message", (req: any, res: any) => {
+  console.log(req.query);
+  console.log(req.headers);
+  res.header({
+      "custom-header": "valor custom"
+  })
+  res.send("lista de mensajes!");
 });
 
-app.post("/message", (req, res) => {
+app.post("/message", (req:any, res: any) => {
   console.log(req.body);
   res.send("creado nuevo mensaje");
 });
