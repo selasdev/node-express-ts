@@ -1,5 +1,5 @@
 import {Request} from "express";
 
-exports.checkIfHasError = (req: Request) => {
+export const checkIfHasError = (req: Request) => {
     return req.query?.error === "true"
 }

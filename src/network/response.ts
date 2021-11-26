@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { BaseResponse } from "../types/responses";
 
-const success = (
+export const successResponse = (
   req: Request,
   res: Response,
   code: number,
@@ -12,7 +12,7 @@ const success = (
   res.status(code).send(responseToClient);
 };
 
-const error = (
+export const errorResponse = (
   req: Request,
   res: Response,
   code: number,
@@ -26,9 +26,4 @@ const error = (
   const responseToClient: BaseResponse = { body: null, error };
 
   res.status(code).send(responseToClient);
-};
-
-module.exports = {
-  error,
-  success,
 };
