@@ -21,7 +21,7 @@ app.get("/message", (req: Request, res: Response) => {
   if (!queryUtils.checkIfHasError(req)) {
     response.success(req, res, 200, "Lista de Mensajes");
   } else {
-    response.error(req, res, 500, "No se pudo obtener la lista de mensajes");
+    response.error(req, res, 500, "No se pudo obtener la lista de mensajes", "Es una simulación");
   }
 });
 
