@@ -1,5 +1,7 @@
 import express, { Application, Request, Response } from "express";
-import { BaseResponse } from "./types/responses";
+
+const response = require("./network/response");
+const queryUtils = require("./util/query");
 
 const app: Application = express();
 app.use(express.json());
@@ -9,34 +11,34 @@ app.get("/", (req: Request, res: Response) => {
   console.log(req.query); // Leyendo los query params de la petición
   console.log(req.headers); // Leyendo las cabeceras de la petición
   console.log(req.body); // Leyendo las cabeceras de la petición
+  res.header({
+    "custom-header": "valor custom",
+  }); // Agregar valores a los headers
   res.send("root");
 });
 
-app.get("/message", (_: Request, res: Response) => {
-  res.header({
-    "custom-header": "valor custom",
-  });
-  const responseToClient: BaseResponse = {
-    error: null,
-    body: "lista de mensajes",
-  };
-  res.status(200).send(responseToClient);
+app.get("/message", (req: Request, res: Response) => {
+  if (!queryUtils.checkIfHasError(req)) {
+    response.success(req, res, 200, "Lista de Mensajes");
+  } else {
+    response.error(req, res, 400, "No se pudo obtener la lista de mensajes");
+  }
 });
 
-app.post("/message", (_: Request, res: Response) => {
-  const responseToClient: BaseResponse = {
-    error: null,
-    body: "creado correctamente",
-  };
-  res.status(201).send(responseToClient);
+app.post("/message", (req: Request, res: Response) => {
+  if (!queryUtils.checkIfHasError(req)) {
+    response.success(req, res, 201, "El mensaje se ha creado");
+  } else {
+    response.error(req, res, 400, "No se pudo crear el mensaje");
+  }
 });
 
-app.delete("/message", (_: Request, res: Response) => {
-  const responseToClient: BaseResponse = {
-    error: null,
-    body: "Eliminado correctamente",
-  };
-  res.status(200).send(responseToClient);
+app.delete("/message", (req: Request, res: Response) => {
+  if (!queryUtils.checkIfHasError(req)) {
+    response.success(req, res, 200, "Mensaje borrado con éxito");
+  } else {
+    response.error(req, res, 400, "No se pudo borrar el mensajes");
+  }
 });
 
 try {
