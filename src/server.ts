@@ -21,7 +21,7 @@ app.get("/message", (req: Request, res: Response) => {
   if (!queryUtils.checkIfHasError(req)) {
     response.success(req, res, 200, "Lista de Mensajes");
   } else {
-    response.error(req, res, 400, "No se pudo obtener la lista de mensajes");
+    response.error(req, res, 500, "No se pudo obtener la lista de mensajes");
   }
 });
 
@@ -29,7 +29,7 @@ app.post("/message", (req: Request, res: Response) => {
   if (!queryUtils.checkIfHasError(req)) {
     response.success(req, res, 201, "El mensaje se ha creado");
   } else {
-    response.error(req, res, 400, "No se pudo crear el mensaje");
+    response.error(req, res, 500, "No se pudo crear el mensaje");
   }
 });
 
@@ -37,9 +37,11 @@ app.delete("/message", (req: Request, res: Response) => {
   if (!queryUtils.checkIfHasError(req)) {
     response.success(req, res, 200, "Mensaje borrado con éxito");
   } else {
-    response.error(req, res, 400, "No se pudo borrar el mensajes");
+    response.error(req, res, 500, "No se pudo borrar el mensajes");
   }
 });
+
+app.use("/app", express.static("public"));
 
 try {
   app.listen(3000, () => {
