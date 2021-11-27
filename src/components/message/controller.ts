@@ -1,5 +1,5 @@
 import { DBMessage } from "./model";
-import { addMessageDB, getMessagesDB, updateMessageDB } from "./store";
+import { addMessageDB, deleteMessageDB, getMessagesDB, updateMessageDB } from "./store";
 
 export const addMessage = async (
   user: string,
@@ -36,4 +36,11 @@ export const patchMessage = async (
     console.error(err);
     throw "No se pudo encontrar el mensaje.";
   }
+};
+
+export const deleteMessage = async (id: string): Promise<DBMessage> => {
+  if (!id) {
+    throw "Mensaje no encontrado";
+  }
+  return await deleteMessageDB(id);
 };

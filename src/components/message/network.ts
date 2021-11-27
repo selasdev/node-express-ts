@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { successResponse, errorResponse } from "../../network/response";
 import { checkIfHasError } from "../../util/query";
-import { addMessage, getMessages, patchMessage } from "./controller";
+import { addMessage, deleteMessage, getMessages, patchMessage } from "./controller";
 
 const router = Router();
 
@@ -33,11 +33,12 @@ router.patch("/:id", async(req: Request, res: Response) => {
   }
 })
 
-router.delete("/", (req: Request, res: Response) => {
-  if (!checkIfHasError(req)) {
-    successResponse(req, res, 200, "Mensaje borrado con éxito");
-  } else {
-    errorResponse(req, res, 500, "No se pudo borrar el mensajes");
+router.delete("/:id", async (req: Request, res: Response) => {
+  try{
+    const responseMessage = await deleteMessage(req.params?.id)
+    successResponse(req, res, 200, responseMessage)
+  }catch(error) {
+    errorResponse(req, res, 500, error);
   }
 });
 
