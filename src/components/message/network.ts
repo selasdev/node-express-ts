@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { successResponse, errorResponse } from "../../network/response";
 import { checkIfHasError } from "../../util/query";
+import { addMessage } from "./controller";
 
 const router = Router();
 
@@ -18,9 +19,14 @@ router.get("/", (req: Request, res: Response) => {
   }
 });
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   if (!checkIfHasError(req)) {
-    successResponse(req, res, 201, "El mensaje se ha creado");
+    try {
+      const responseMessage = await addMessage(req.body?.user, req.body?.message);
+      successResponse(req, res, 201, responseMessage);
+    } catch (error) {
+      errorResponse(req, res, 500, error)
+    }
   } else {
     errorResponse(req, res, 500, "No se pudo crear el mensaje");
   }
