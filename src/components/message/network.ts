@@ -1,6 +1,5 @@
 import { Router, Request, Response } from "express";
 import { successResponse, errorResponse } from "../../network/response";
-import { checkIfHasError } from "../../util/query";
 import { addMessage, deleteMessage, getMessages, patchMessage } from "./controller";
 
 const router = Router();
