@@ -1,18 +1,22 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
 import { initDB } from "./db";
 import routes from "./network/routes";
+const { connect } = require("./socket");
 require("dotenv").config();
 
 const app: Application = express();
+const server = require("http").Server(app);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+connect(server);
 routes(app);
 app.use("/app", express.static("public"));
 
 initDB(process.env.DBURL as string)
   .then(() => {
     console.log("[db]: Conectado a la base de datos");
-    app.listen(3000, () => {
+    server.listen(3000, () => {
       console.log("La aplicación está escuchando en http://localhost:3000");
     });
   })

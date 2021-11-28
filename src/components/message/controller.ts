@@ -1,4 +1,5 @@
 import { ObjectId } from "mongoose";
+const { socket } = require("../../socket");
 import { DBMessage } from "./model";
 import {
   addMessageDB,
@@ -18,7 +19,9 @@ export const addMessage = async (
     typeof user === "string" &&
     typeof message === "string"
   ) {
-    let fileUrl = file ? "http://localhost:3000/app/files/" + file.filename : "" ;
+    let fileUrl = file
+      ? "http://localhost:3000/app/files/" + file.filename
+      : "";
 
     const newMessage: DBMessage = {
       chat: chat as unknown as ObjectId,
@@ -29,6 +32,8 @@ export const addMessage = async (
     };
 
     const resultMessage = await addMessageDB(newMessage);
+    socket.io.emit("message", resultMessage);
+
     return resultMessage;
   } else {
     throw "Los datos de entrada son incorrectos";
