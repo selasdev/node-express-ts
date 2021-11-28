@@ -4,6 +4,7 @@ export interface DBMessage {
   user: Schema.Types.ObjectId;
   chat: Schema.Types.ObjectId;
   message: string;
+  file: string;
   date: Date;
 }
 
@@ -11,6 +12,7 @@ const mySchema = new Schema<DBMessage>({
   user: {type: Schema.Types.ObjectId, ref: 'User'},
   chat: {type: Schema.Types.ObjectId, ref: 'Chat'},
   message: { type: String, required: true },
+  file: { type: String, required: true },
   date: { type: Date, required: true },
 });
 

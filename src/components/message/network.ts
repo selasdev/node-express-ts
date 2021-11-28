@@ -1,8 +1,12 @@
 import { Router, Request, Response } from "express";
 import { successResponse, errorResponse } from "../../network/response";
 import { addMessage, deleteMessage, getMessages, patchMessage } from "./controller";
-
+const multer = require("multer");
 const router = Router();
+
+const upload = multer({
+  dest: 'public/files/',
+})
 
 router.get("/", async (req: Request, res: Response) => {
   try {
@@ -15,9 +19,10 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", upload.single('file'), async (req: Request, res: Response) => {
     try {
-      const responseMessage = await addMessage(req.body?.chat, req.body?.user, req.body?.message);
+      console.log((req as any).file);
+      const responseMessage = await addMessage(req.body?.chat, req.body?.user, req.body?.message, (req as any).file);
       successResponse(req, res, 201, responseMessage);
     } catch (error) {
       errorResponse(req, res, 500, error)

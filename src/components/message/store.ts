@@ -1,4 +1,3 @@
-import { resolve } from "path/posix";
 import { DBMessage, MessageModel } from "./model";
 
 export const addMessageDB = async (message: DBMessage): Promise<DBMessage> => {
