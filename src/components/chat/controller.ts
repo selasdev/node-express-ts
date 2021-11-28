@@ -22,7 +22,20 @@ async function getChats() {
   }
 }
 
+async function getChatsByUser(userid: string) {
+  try {
+    if (typeof userid !== "string") {
+      console.error('[ERROR] [CHAT CONTROLLER] Usuario incorrecto')
+      throw new Error()
+    }
+    return await store.getChatsByUser(userid)
+  } catch (error) {
+    throw new Error('Error al obtener los datos')
+  }
+}
+
 module.exports = {
   addChat,
-  getChats
+  getChats,
+  getChatsByUser
 }

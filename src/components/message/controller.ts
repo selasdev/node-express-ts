@@ -3,11 +3,13 @@ import { DBMessage } from "./model";
 import { addMessageDB, deleteMessageDB, getMessagesDB, updateMessageDB } from "./store";
 
 export const addMessage = async (
+  chat: string,
   user: string,
   message: string
 ): Promise<DBMessage> => {
-  if (typeof user === "string" && typeof message === "string") {
+  if (typeof chat === "string" && typeof user === "string" && typeof message === "string") {
     const newMessage: DBMessage = {
+      chat: chat as unknown as ObjectId,
       user: user as unknown as ObjectId,
       message: message,
       date: new Date(),
@@ -20,8 +22,8 @@ export const addMessage = async (
   }
 };
 
-export const getMessages = async (user?: string): Promise<DBMessage[]> => {
-  return await getMessagesDB(user);
+export const getMessages = async (user?: string, chat?: string): Promise<DBMessage[]> => {
+  return await getMessagesDB(user, chat);
 };
 
 export const patchMessage = async (

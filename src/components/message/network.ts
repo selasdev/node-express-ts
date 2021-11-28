@@ -7,7 +7,8 @@ const router = Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const userFilter = req.query?.user;
-    const messages = await getMessages(userFilter as string);
+    const chatFilter = req.query?.chat;
+    const messages = await getMessages(userFilter as string, chatFilter as string);
     successResponse(req, res, 200, { messages });
   }catch(error){
     errorResponse(req, res, 500, error)
@@ -16,7 +17,7 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
     try {
-      const responseMessage = await addMessage(req.body?.user, req.body?.message);
+      const responseMessage = await addMessage(req.body?.chat, req.body?.user, req.body?.message);
       successResponse(req, res, 201, responseMessage);
     } catch (error) {
       errorResponse(req, res, 500, error)

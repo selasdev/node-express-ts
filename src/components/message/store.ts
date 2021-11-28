@@ -7,10 +7,13 @@ export const addMessageDB = async (message: DBMessage): Promise<DBMessage> => {
   return newMessage;
 };
 
-export const getMessagesDB = async (user?: string): Promise<DBMessage[]> => {
+export const getMessagesDB = async (user?: string, chat?: string,): Promise<DBMessage[]> => {
   let filter: Record<string, string> = {};
   if (typeof user === "string") {
     filter.user = user;
+  }
+  if (typeof chat === "string") {
+    filter.chat = chat;
   }
   return new Promise((resolve, reject) => {
     MessageModel.find(filter)

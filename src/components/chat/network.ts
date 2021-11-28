@@ -13,6 +13,16 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/:userid", async (req: Request, res: Response) => {
+  try {
+    const chatsList = await controller.getChatsByUser(req.params?.userid);
+    successResponse(req, res, 200, chatsList);
+  } catch (error) {
+    console.error(error);
+    errorResponse(req, res, 500, "Error inesperado");
+  }
+});
+
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { users } = req.body;
