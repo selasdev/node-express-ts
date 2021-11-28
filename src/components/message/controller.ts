@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { DBMessage } from "./model";
 import { addMessageDB, deleteMessageDB, getMessagesDB, updateMessageDB } from "./store";
 
@@ -7,7 +8,7 @@ export const addMessage = async (
 ): Promise<DBMessage> => {
   if (typeof user === "string" && typeof message === "string") {
     const newMessage: DBMessage = {
-      user: user,
+      user: user as unknown as ObjectId,
       message: message,
       date: new Date(),
     };

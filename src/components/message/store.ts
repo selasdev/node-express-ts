@@ -1,3 +1,4 @@
+import { resolve } from "path/posix";
 import { DBMessage, MessageModel } from "./model";
 
 export const addMessageDB = async (message: DBMessage): Promise<DBMessage> => {
@@ -11,8 +12,18 @@ export const getMessagesDB = async (user?: string): Promise<DBMessage[]> => {
   if (typeof user === "string") {
     filter.user = user;
   }
-  const messages = await MessageModel.find(filter);
-  return messages;
+  return new Promise((resolve, reject) => {
+    MessageModel.find(filter)
+      .populate("user")
+      .exec((err, populated) => {
+        if (err) {
+          console.error(err);
+          reject("Error populando");
+        } else {
+          resolve(populated);
+        }
+      });
+  });
 };
 
 export const updateMessageDB = async (
