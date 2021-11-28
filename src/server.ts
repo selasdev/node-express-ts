@@ -2,11 +2,13 @@ import express, { Application } from "express";
 import { initDB } from "./db";
 import routes from "./network/routes";
 const { connect } = require("./socket");
+const cors = require("cors");
 require("dotenv").config();
 
 const app: Application = express();
 const server = require("http").Server(app);
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 connect(server);
